@@ -1,0 +1,291 @@
+
+<div nz-row class="kwp-row search-result">
+    <div nz-col nzSpan="12" class="kwp-col kwp-col-left">
+
+        <div class="inner-content-col mb-10">
+            <div class="kwp-flex-inline kwp-flex-inline-between">
+
+                <div class="kwp-flex-inline kwp-flex-inline-left mb-10"  style="    font-size: 22px;">
+                    <i style="color: #ffd500;" nz-icon nzType="star" nzTheme="fill"></i> 
+                    <div style="padding: 0 10px;text-transform: capitalize;"> {{ 'text.list' | translate }}: </div>    
+                    <div style="font-weight: 600;">{{list.title}}</div>
+                </div>
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="menu">Actions<i nz-icon nzType="down"></i></button>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item>
+                            <a (click)="openRenameList()"><i nz-icon nzType="edit" nzTheme="outline"></i> Rename</a>
+                        </li>
+                        <li nz-menu-item>
+                            <a><i nz-icon nzType="download" nzTheme="outline"></i> Export</a>
+                        </li>
+                        
+                        <li nz-menu-item >
+                            
+                            <a (click)="openConfirmDeleteList()"><i style="color: red;" nz-icon nzType="delete" nzTheme="outline"></i> Delete</a>
+                        </li>
+                    </ul>
+                    </nz-dropdown-menu>
+                </div>
+
+            </div>
+        </div>
+
+        <nz-row [nzGutter]="16" class="mb-20">
+            <nz-col [nzSpan]="6">
+                <nz-card class="p-15 card-shadow">
+                  <nz-statistic
+                    [nzValue]="keywords.length | number"
+                    [nzTitle]="'text.totalKeyword' | translate">
+                  </nz-statistic>
+                </nz-card>
+              </nz-col>
+            <nz-col [nzSpan]="6">
+              <nz-card class="p-15 card-shadow">
+                <nz-statistic
+                  [nzValue]="listAvg.sumSearch | number"
+                  [nzTitle]="'text.SearchSum' | translate">
+                </nz-statistic>
+              </nz-card>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+              <nz-card class="p-15 card-shadow">
+                <nz-statistic
+                  [nzPrefix]="currency"  
+                  [nzValue]="listAvg.avgcpc | number"
+                  [nzTitle]="'text.avgcpc' | translate">
+                </nz-statistic>
+                <ng-template #currency>$</ng-template>
+              </nz-card>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+                <nz-card class="p-15 card-shadow">
+                  <nz-statistic
+                    [nzValue]="listAvg.avgppc | number"
+                    [nzTitle]="'text.avgppc' | translate">
+                  </nz-statistic>
+                </nz-card>
+              </nz-col>
+        </nz-row>
+        
+
+        <div class="kwp-flex-inline data-result-action">
+            <div>
+                {{ 'action.selected' | translate  }} <b>{{ setOfCheckedId.size }}</b> {{ 'action.keywords' | translate  }}
+            </div>
+            <div class="kwp-flex-inline">
+                <button (click)="removeFromList()" [disabled]="setOfCheckedId.size == 0" nz-button nzSize="small" nzType="default"><i nz-icon nzType="delete" nzTheme="outline" nzTheme="twotone" nzTwotoneColor="red"></i>{{ 'action.remove' | translate  }}</button>
+                <button (click)="addToList()" [disabled]="setOfCheckedId.size == 0" class="ml-5" nz-button nzSize="small" nzType="default"><i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>{{ 'action.copyToList' | translate  }}</button>
+                <button [disabled]="setOfCheckedId.size == 0" class="ml-5" nz-button nzSize="small" nzType="default"><i nz-icon nzType="download"></i>{{ 'action.export' | translate  }}</button>
+            </div>    
+        </div>
+        <div class="data-result data-result-savedlist">
+
+            
+
+            <nz-table #sortTable [nzData]="keywords"  [nzNoResult]="nodata"  [nzPageSize]="10" [nzScroll]="{ y: '300px' }" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+                <thead>
+                  <tr>
+                    
+                    <th [nzWidth]="'35px'" [nzChecked]="checked"  (nzCheckedChange)="onAllChecked($event)"></th>
+                    <th *ngFor="let column of listOfColumn" [nzWidth]="column.width" [nzSortFn]="column.compare" nzType="primary" nz-popover [nzPopoverTitle]="column.title" [nzPopoverPlacement]="'top'" [nzPopoverContent]="column.popoverContent" [nzPopoverMouseEnterDelay]="0.5">{{ column.title }}</th>
+                  
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="gettingKeywords">
+                        <td colspan="6">
+                            <nz-skeleton-element nzType="input" [nzActive]="true" [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+                
+                        </td>
+                    </tr>  
+                    <tr *ngIf="gettingKeywords">
+                        <td colspan="6">
+                            <nz-skeleton-element nzType="input" [nzActive]="true" [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+                
+                        </td>
+                    </tr>  
+                    <tr *ngIf="gettingKeywords">
+                        <td colspan="6">
+                            <nz-skeleton-element nzType="input" [nzActive]="true" [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+                        </td>
+                    </tr>    
+                  <tr *ngFor="let data of sortTable.data" (click)="selectKeywordSerp(data)" [attr.id]="data._id" [ngClass]="{'selected': keyword._id === data._id}">
+                    <td
+                        [nzChecked]="setOfCheckedId.has(data._id)"
+                        (nzCheckedChange)="onItemChecked(data._id, $event)">
+                    </td>  
+                    <td class="">
+                       
+                        <i nz-popconfirm nzPopconfirmTitle="Remove from this list?" nzOkText="Remove" nzCancelText="Cancel" (nzOnConfirm)="removeKeyword(data)" style="color: #ffd500;padding-right: 10px;" nz-icon nzType="star" nzTheme="fill"></i>
+                        
+                        {{ data.kw }}
+
+                        <span class="kw-code">{{ data.location.code }}</span>
+                    </td>
+                    <td [innerHTML]="chartService.draw(data.msv) | safeHtml"></td>
+                    <td>{{ data.ams | number }}</td>
+                    <td>${{ data.cpc }}</td>
+                    <td>{{ data.ppc }}</td>
+                  </tr>
+                </tbody>
+
+            </nz-table>
+
+            <ng-template #loading>
+
+              <tr>
+                <td colspan="6">
+                    <nz-skeleton-element nzType="input"  [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+        
+                </td>
+              </tr>  
+              <tr>
+                <td colspan="6">
+                    <nz-skeleton-element nzType="input" [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+        
+                </td>
+              </tr>  
+              <tr>
+                <td colspan="6">
+                    <nz-skeleton-element nzType="input" [nzSize]="'small'" style="width:100%"></nz-skeleton-element>
+        
+                </td>
+              </tr> 
+
+            </ng-template>
+
+            <ng-template #nodata>
+
+            </ng-template>
+
+        </div>
+
+
+    </div>
+    <div nz-col nzSpan="12" class="kwp-col kwp-col-right" id="colRight" #colRight>
+
+        <div class="kwp-flex-block">
+
+            <div class="kwp-flex-block" id="result-msv">
+                <div class=""><h1 class="title">{{keyword !== undefined ? keyword.kw : ''}}</h1></div>
+                <div class="kwp-flex-inline kwp-flex-inline-left mb-10">
+                    <div style="margin-right: 15px;"><i nz-icon nzType="environment" nzTheme="outline"></i> {{ keyword.location.label }}</div>
+                    <div><i nz-icon nzType="translation" nzTheme="outline"></i> {{ keyword.language.label }}</div>
+                </div>
+                <nz-row [nzGutter]="16" class="mb-20">
+
+                    <nz-col [nzSpan]="6">
+                        <nz-card class="card-shadow mb-10 p-15" >
+               
+                            <nz-statistic [nzValue]="keyword.ams | number" [nzTitle]="'Search'"></nz-statistic>
+                       
+                        </nz-card>  
+                        <nz-card class="card-shadow mb-10 p-15">
+                            <nz-statistic
+                            [nzValue]="(lastMonthPercent | number: '1.0-2')!"
+                            [nzTitle]="'text.recentMonth' | translate"
+                            [nzPrefix]="prefixTplOne"
+                            [nzSuffix]="'%'"
+                            [nzValueStyle]="lastMonthPercent >= 0 ? {color: '#3F8600'} : {color: '#CF1322'}"
+                            >
+                            </nz-statistic>
+                            <ng-template #prefixTplOne><i nz-icon [nzType]="lastMonthPercent >= 0 ? 'arrow-up' : 'arrow-down'"></i></ng-template>
+                        </nz-card>  
+                    </nz-col>
+                    <nz-col [nzSpan]="18">
+                        <nz-card  class="card-shadow p-10" style="height:200px;min-width: 100%;">
+                            <div *ngIf="keyword.msv !== undefined && keyword.msv.length > 0">
+                                <google-chart style="width: 100%;" [height]="180" [title]="'text.MonthlySearchData' | translate" [type]="'ColumnChart'"  [data]="msv"  [options]="chartService.options">
+                                </google-chart>
+                            </div>
+                            
+                        
+                        </nz-card>  
+                    </nz-col>
+
+                </nz-row>
+            
+            </div>
+
+            <div class="kwp-flex-block">
+                <h3 id="serp-result-title">{{ 'text.SERP_overview' | translate }}</h3>
+                <div class="serp-result" #serpResultCard>
+                    <nz-card class="card-shadow mb-10 p-15" #serpResultCardContent id="serp-result-card" >
+
+                        <div *ngIf="gettingSerps">
+                            <nz-skeleton [nzActive]="true"></nz-skeleton>
+                            <nz-skeleton [nzActive]="true"></nz-skeleton>
+                        </div>
+                        <div *ngIf="!gettingSerps">
+                            <nz-list nzItemLayout="vertical">
+                                <nz-list-item *ngFor="let item of serps | keyvalue; trackBy: trackByFn">
+                                    
+                                    <nz-list-item-meta (click)="linkProfile(item.value.link,item.value.title,keyword.kw,item.value.metric)">
+                                        <nz-list-item-meta-title>
+                                            <div class="link">
+                                                <div class="pos"><nz-badge [nzCount]="item.value.pos" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge></div>
+                                                <div class="domain">{{ item.value.domain }}</div>
+                                                <div class="path">› {{ helperService.getUrlFromString(item.value.link) }}</div>
+                                            </div>
+                                            <div>{{ item.value.title }}</div>
+                                            
+                                        </nz-list-item-meta-title>
+                                        <nz-list-item-meta-description>
+                                            <div>
+                                                <div [innerHTML]="item.value.htmlSnippet"></div>
+                                                <div *ngIf="item.value.metric !== undefined">
+                                                    <nz-tag nz-tooltip nzTooltipTitle="Domain Authority" [nzColor]="'#2db7f5'">DA: {{item.value.metric.domain_authority}}</nz-tag>
+                                                    <nz-tag nz-tooltip nzTooltipTitle="Page Authority" [nzColor]="'#87d068'">PA: {{item.value.metric.page_authority}}</nz-tag>
+                                                    <nz-tag nz-tooltip nzTooltipTitle="Backlinks" [nzColor]="'rgb(154 160 151)'">BL: {{item.value.metric.external_pages_to_page | number}}</nz-tag>    
+                                                </div>
+                                            </div>
+                                        </nz-list-item-meta-description>
+                                    </nz-list-item-meta>
+    
+                                </nz-list-item>
+                                
+                            </nz-list>
+                        </div>
+                        
+
+                        <div *ngIf="!gettingSerps && serps.length > 0" class="kwp-flex-inline">
+
+                            <button *ngIf="serpCurrentPage > 1" style="margin-right: 10px;" [nzLoading]="serpNextPageLoading" (click)="nextPageSerp(-1)" nz-button nzType="default" nzSize="small"><i nz-icon nzType="left"></i> Previous page</button>
+                            <button [nzLoading]="serpNextPageLoading" (click)="nextPageSerp(1)" nz-button nzType="default" nzSize="small">Next page <i nz-icon nzType="right"></i></button>
+
+                        </div>
+
+                    </nz-card>
+        
+                </div>
+        
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<nz-modal
+        [(nzVisible)]="isVisibleRenameList"
+        nzTitle="Rename list"
+        nzOkText="Ok"
+        nzCancelText="Cancel"
+        (nzOnOk)="renameList()"
+        (nzOnCancel)="this.isVisibleRenameList = false"
+      >
+      <div>
+
+        <form nz-form nzLayout="vertical" [formGroup]="validateFormRenameList">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="null">{{ 'text.listName' | translate }}</nz-form-label>
+              <nz-form-control [nzSpan]="null" nzErrorTip="Please input your list name!">
+                <input nz-input  formControlName="title" placeholder="{{ 'text.listNameExp' | translate }}" />
+              </nz-form-control>
+            </nz-form-item>
+        </form>
+
+      </div>  
+</nz-modal>

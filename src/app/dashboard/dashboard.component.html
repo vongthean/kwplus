@@ -1,0 +1,46 @@
+  <nz-layout>
+    <nz-header class="header-primary" id="header-primary">
+      <div class="brand">
+        <div class="logo">KWPush</div>
+      </div>
+      
+      <div class="header-nav">
+        <ul nz-menu nzTheme="light" nzMode="horizontal" class="sub-nav kwp-flex-inline h-100">
+          <li nz-menu-item  class="kwp-flex-inline h-100"><a class="h-100 kwp-flex-inline" routerLink="/">{{ 'menu.search' | translate }}</a></li>
+          <li nz-menu-item   class="kwp-flex-inline h-100"><a class="h-100 kwp-flex-inline" (click)="openLists()" >{{ 'menu.lists' | translate }}</a></li>
+          <li nz-menu-item  class="kwp-flex-inline h-100"><a class="h-100 kwp-flex-inline" routerLink="/tracker">{{ 'menu.tracker' | translate }}</a></li>
+          <li nz-menu-item  class="kwp-flex-inline h-100"><a class="h-100 kwp-flex-inline" href="/login">URL Profile</a></li>
+        </ul>
+  
+        <div class="kwp-flex-inline right-nav">
+          
+          <div>
+            <a nz-dropdown [nzDropdownMenu]="menuLang">
+              Lang
+              <i nz-icon nzType="down"></i>
+            </a>
+            <nz-dropdown-menu #menuLang="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item><a (click)="useLanguage('en')"><span class="flag en"></span> English</a></li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item><a  (click)="useLanguage('vn')"><span class="flag vn"></span> Vietnam</a></li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+          <div>
+            <nz-avatar nzIcon="user" nzSrc="https://secure.gravatar.com/avatar/8fcc8776bcf2fa8e7a79432996a40510?rating=PG&default=404"></nz-avatar>
+          </div>
+          
+        </div>
+      </div>
+
+    </nz-header>
+    <nz-content>
+
+      <div class="inner-content">
+
+        <router-outlet></router-outlet>
+
+      </div>
+    </nz-content>
+  </nz-layout>

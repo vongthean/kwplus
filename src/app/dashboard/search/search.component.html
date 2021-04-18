@@ -1,0 +1,72 @@
+<div class="inner-content-col">
+    <div class="kwp-layout-search-2">
+
+        <div nz-row class="search-container">
+            <div nz-col nzSpan="20" nzOffset="2">
+        
+                <h1>{{ 'text.titleSearch' | translate  }}</h1>
+                <p>{{ 'text.descSearch' | translate  }}</p>
+                <p>Understand your competitors and do better than them.</p>
+        
+            </div>
+        
+            <div nz-col nzSpan="20" nzOffset="2">
+                <form nz-form (ngSubmit)="search()" [formGroup]="validateFormSearch">
+                    <div class="kwp-search-main">
+                        <nz-input-group  [nzAddOnBefore]="prefixTemplateSearch" [nzAddOnAfter]="addOnAfterTemplate">
+                            <input formControlName="keyword"  type="text" nz-input placeholder="{{ 'text.inputSearchKeyWord' | translate  }}" />
+                        </nz-input-group>
+                        <ng-template #prefixTemplateSearch class="kwp-search-start"><i nz-icon nzType="search"></i></ng-template>
+                        <ng-template #addOnAfterTemplate class="kwp-search-end">
+                            <nz-select nzShowSearch (nzOnSearch)="searchLocations($event)" nzOptionHeightPx="45" formControlName="location_id"  [(ngModel)]="location_id"  nzDropdownClassName="kwp-search-location" nzCustomTemplate="defaultTemplate">
+                                <nz-option nzCustomContent [nzLabel]="'text.anyWhere' | translate " [nzValue]="'any'">
+                                
+                                    <div class="kwp-search-location-item">
+                                        <div class="location-name default">
+                                            <i nz-icon nzType="global" nzTheme="outline"></i> {{ 'text.anyWhere' | translate  }}
+                                        </div>
+                                        <div class="location-target">
+                                            Default
+                                        </div>
+                                    </div>
+                                </nz-option>
+
+                                <nz-option nzCustomContent *ngFor="let location of locations"  [nzLabel]="location.label" [nzValue]="location.value">
+                                    
+                                    <div class="kwp-search-location-item">
+                                        <div class="location-name">
+                                            <span class="flag {{location.code}}"></span> {{location.label}}
+                                        </div>
+                                        <div class="location-target">
+                                            {{location.target_type}}
+                                        </div>
+                                    </div>
+
+                                </nz-option>
+
+                        
+                            </nz-select>
+                            <ng-template #defaultTemplate let-selected>{{ selected.nzLabel }}</ng-template>
+                            <nz-select nzShowSearch formControlName="language_id" [ngModel]="language_id">
+                                <nz-option nzCustomContent nzLabel="Vietnamese" [nzValue]="'any'">
+                                    <i nz-icon nzType="translation" nzTheme="outline"></i> Any Language 
+                                </nz-option>
+                                <nz-option nzCustomContent nzLabel="Vietnamese" [nzValue]="1040">
+                                    <i nz-icon nzType="translation" nzTheme="outline"></i> Vietnamese 
+                                </nz-option>
+                                <nz-option nzCustomContent nzLabel="United States" [nzValue]="0">
+                                    United States 
+                                </nz-option>
+                            </nz-select>
+                            <button class="kwp-search-button" nz-button nzType="primary" nzSize="large" nzSearch>{{ 'text.buttonSearchKeyWord' | translate  }} <i nz-icon nzType="arrow-right" nzTheme="outline"></i></button>
+                        </ng-template>
+                    </div>
+
+                </form>
+        
+            </div>
+        </div>        
+
+    </div>
+
+</div>

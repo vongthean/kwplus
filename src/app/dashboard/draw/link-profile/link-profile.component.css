@@ -1,0 +1,19 @@
+.fullurl {
+    padding: 20px 0;
+    font-size: 16px;
+}
+
+.fullurl .path {
+    overflow: hidden;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.fullurl .domain {
+    font-size: 20px;
+    font-weight: 700;
+}
+.serp-result {
+    width: 100%;
+}

@@ -1,0 +1,14 @@
+{
+    "menu" : {
+        "search": "Tìm từ khóa",
+        "lists": "Danh sách",
+        "tracker": "Theo dõi từ khóa"
+    },
+    "text": {
+        "titleSearch": "Công cụ tìm kiếm ý tưởng từ khóa",
+        "descSearch": "Khám phá các từ khóa mới giúp bạn thực hiện chiến dịch SEO và SEM (Google Ads) thành công hơn. Cung cấp đầy đủ các chỉ số quan trọng như: khối lượng tìm kiếm, độ khó từ khóa, mức độ cạnh tranh, loại từ khóa ...",
+        "inputSearchKeyWord": "Nhập từ khóa",
+        "buttonSearchKeyWord": "Tìm từ khóa",
+        "anyWhere": "Mọi nơi"
+    }
+}

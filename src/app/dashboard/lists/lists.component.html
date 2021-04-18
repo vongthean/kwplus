@@ -1,0 +1,10 @@
+<div class="kwp-flex-block list">
+
+    <nz-card *ngFor="let list of lists" class="card-shadow mb-20 list-item" nzSize="small" (click)="searchByList(list)">
+        <div class="kwp-flex-inline kwp-flex-inline-between">
+            <div class="name">{{ list.title }}</div>
+            <div><nz-badge [nzCount]="list.keyword_ids.length" [nzShowZero]="true" [nzOverflowCount]="5000" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge></div>
+        </div>
+    </nz-card>
+
+</div>

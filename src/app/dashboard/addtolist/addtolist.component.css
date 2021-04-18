@@ -1,0 +1,7 @@
+
+.list-item {
+    cursor: pointer;
+}
+.list-item .name {
+    font-weight: 600;
+}

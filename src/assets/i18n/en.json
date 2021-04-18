@@ -1,0 +1,44 @@
+{
+    "menu" : {
+        "search": "Search",
+        "lists": "Lists",
+        "tracker": "Trackers"
+    },
+    "text": {
+        "titleSearch": "Keyword Planner Ideas",
+        "descSearch": "Discover new keywords that will help you make your SEO and SEM (Google Ads) campaigns more successful. Provide a full range of important metrics such as search volume, keyword difficulty, competition level, keyword type ...",
+        "inputSearchKeyWord": "Enter keyword",
+        "buttonSearchKeyWord": "Find keywords",
+        "anyWhere": "Anywhere",
+        "keyword": "Keyword",
+        "list": "list",
+        "listName": "List name",
+        "listNameExp": "e.g. Web design 2021 - Mr. Jones",
+        "recentMonth": "Recent month",
+        "MonthlySearchData": "Monthly search data",
+        "SERP_overview": "SERP overview",
+        "SearchSum": "Search sum",
+        "avgcpc": "Average CPC",
+        "avgppc": "Average PPC",
+        "totalKeyword": "Keywords"
+    },
+    "hover": {
+        "keyword": "Suggested related keywords",
+        "trend" : "Search Volume Trend in last 12 months",
+        "search": "Average Monthly Search Volume",
+        "cpc": "Average Cost Per Click in Google Ads",
+        "ppc": ""
+    },
+    "action": {
+        "selected": "Selected",
+        "keywords": "keyword(s)",
+        "addToList": "Add to list",
+        "copyToList": "Copy to list",
+        "remove": "Remove",
+        "export": "Export",
+        "newList": "New list",
+        "createList": "Create list",
+        "add": "Add",
+        "cancel": "Cancel"
+    }
+}

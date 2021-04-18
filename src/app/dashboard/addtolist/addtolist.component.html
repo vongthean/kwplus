@@ -1,0 +1,38 @@
+<div class="kwp-flex-block list">
+
+    <div class="kwp-flex-inline mb-20">
+        <button (click)="addList()" nz-button nzType="dashed" nzBlock><i nz-icon nzType="plus" nzTheme="outline"></i> {{ 'action.newList' | translate }}</button>
+    </div>
+
+    <nz-card *ngFor="let list of lists" class="card-shadow mb-20 list-item" nzSize="small" (click)="addKeywordsToList(list)">
+        <div class="kwp-flex-inline kwp-flex-inline-between">
+            <div class="name">{{ list.title }}</div>
+            <div><nz-badge [nzCount]="list.keyword_ids.length" [nzShowZero]="true" [nzOverflowCount]="5000" [nzStyle]="{ backgroundColor: '#52c41a' }"></nz-badge></div>
+        </div>
+    </nz-card>
+
+</div>
+
+<nz-modal
+        [(nzVisible)]="isVisibleNewList"
+        nzTitle="{{ 'action.newList' | translate }}"
+        nzOkText="{{ 'action.createList' | translate }}"
+        nzCancelText="{{ 'action.cancel' | translate }}"
+        [nzFooter]="modalFooter">
+        <div>
+
+            <form nz-form nzLayout="vertical" [formGroup]="validateFormAddList">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="null">{{ 'text.listName' | translate }}</nz-form-label>
+                  <nz-form-control [nzSpan]="null" nzErrorTip="Please input your list name!">
+                    <input nz-input formControlName="title" placeholder="{{ 'text.listNameExp' | translate }}" />
+                  </nz-form-control>
+                </nz-form-item>
+            </form>
+
+        </div>
+        <ng-template #modalFooter>
+            <button nz-button nzType="default" (click)="handleCancelList()">{{ 'action.cancel' | translate }}</button>
+            <button nz-button nzType="primary" (click)="handleAddList()" [nzLoading]="isAddListLoading">{{ 'action.createList' | translate }}</button>
+        </ng-template>
+</nz-modal>

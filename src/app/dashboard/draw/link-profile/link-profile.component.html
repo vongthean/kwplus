@@ -1,0 +1,157 @@
+<div>
+
+    <nz-row>
+        <nz-col [nzSpan]="24">
+            <h1>{{title}}</h1>
+        </nz-col>
+        <nz-col [nzSpan]="24">
+          
+
+                <div class="kwp-flex-inline kwp-flex-inline-left fullurl mb-10">
+                    <div class="favicon" style="padding-right: 5px;"><img width="25" src="https://www.google.com/s2/favicons?sz=64&domain_url={{metric.subdomain}}"></div>
+                    <div class="domain">{{metric.subdomain}}</div>
+                    <div class="path">/{{helperService.getUrlFromDomain(metric.page)}}</div>
+                    <div>
+                        <a href="http://{{metric.page}}" target="_blank">
+                            <i nz-icon nzType="export" nzTheme="outline"></i>
+                        </a>
+                    </div>
+                </div>
+
+        
+            
+        </nz-col>
+
+    </nz-row>
+    <nz-row [nzGutter]="16" class="mb-50">
+       
+        <nz-col [nzSpan]="12">
+            <nz-card class="card-shadow p-30"> 
+
+                <div class="kwp-flex-inline kwp-flex-block">
+
+                    <nz-progress [nzPercent]="metric.domain_authority"  nzType="circle" [nzFormat]="formatDA"></nz-progress>
+                    <br>
+                    <nz-statistic [nzValue]="metric.domain_authority" [nzTitle]="'Domain Authority'" [nzSuffix]="'/ 100'"></nz-statistic>
+
+                </div>
+
+                
+            </nz-card>
+        </nz-col>
+   
+        <nz-col [nzSpan]="12">
+            <nz-card class="card-shadow p-30"> 
+                <div class="kwp-flex-inline kwp-flex-block">
+                    <nz-progress [nzPercent]="metric.page_authority" nzType="circle" [nzFormat]="formatPA"></nz-progress>
+                    <br>
+                    <nz-statistic [nzValue]="metric.page_authority" [nzTitle]="'Page Authority'" [nzSuffix]="'/ 100'"></nz-statistic>
+                </div>    
+            </nz-card>
+        </nz-col>
+    </nz-row>
+
+    <nz-row [nzGutter]="16" class="mb-20">
+        <nz-col [nzSpan]="24">
+            <h3>Backlink</h3>
+        </nz-col>
+        <nz-col [nzSpan]="8">
+            <nz-card class="card-shadow p-10"> 
+
+                <nz-statistic [nzValue]="(metric.external_pages_to_page | number)!" [nzTitle]="'Do Follow'" [nzPrefix]="DF"></nz-statistic>
+                <ng-template #DF><i nz-icon nzType="branches" nzTheme="outline"></i></ng-template>
+
+            </nz-card>    
+        </nz-col>
+        <nz-col [nzSpan]="8">
+
+            <nz-card class="card-shadow p-10"> 
+          
+                <nz-statistic [nzValue]="metric.external_nofollow_pages_to_page | number" [nzTitle]="'No Follow'" [nzPrefix]="NF"></nz-statistic>
+                <ng-template #NF><i nz-icon nzType="branches" nzTheme="outline"></i></ng-template>
+
+            </nz-card>    
+        </nz-col>
+        <nz-col [nzSpan]="8">
+
+            <nz-card class="card-shadow p-10"> 
+          
+                <nz-statistic [nzValue]="metric.deleted_pages_to_page | number" [nzTitle]="'Deleted Links'" [nzPrefix]="LB"></nz-statistic>
+                <ng-template #LB><i nz-icon nzType="disconnect" nzTheme="outline"></i></ng-template>
+
+            </nz-card>    
+        </nz-col>
+    </nz-row>
+
+    <nz-row [nzGutter]="" class="mb-20">
+
+        <nz-col [nzSpan]="24" class="kwp-flex-inline kwp-flex-inline-left kwp-flex-block" style="align-items: flex-start;">
+            <h3 [ngStyle]="{ margin: '16px 0' }">TOP 10 Backlinks</h3>
+
+            <div *ngIf="gettingBacklinks">
+                <nz-skeleton></nz-skeleton>
+                <nz-skeleton></nz-skeleton>
+                <nz-skeleton></nz-skeleton>
+            </div>
+            <div *ngIf="!gettingBacklinks" class="serp-result">
+
+                <nz-list nzBordered nzSize="large">
+                    <nz-list-item *ngFor="let item of backlinks">
+                           
+                        <div class="kwp-flex-inline  kwp-flex-block kwp-flex-inline-left" style="align-items: flex-start;width: 100%;">
+
+                            <div>
+                                Anchor Text: <b>{{ item.anchor_text }}</b>
+                            </div>
+                            <div class="link mb-10 kwp-flex-inline-between" style="height: 14px;">
+                                
+                                <div class="kwp-flex-inline kwp-flex-inline-left">
+                                    <div class="domain">{{item.source.subdomain}}</div>
+                                    <div class="path">/{{ helperService.getUrlFromDomain(item.source.page) }} </div>
+                                </div>
+                                
+                                <div style="justify-self: flex-end;">
+                                    <a nz-tooltip nzTooltipTitle="Open URL in new Tab" href="http://{{item.source.page}}" target="_blank">
+                                        <i nz-icon nzType="export" nzTheme="outline"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <nz-tag nz-tooltip nzTooltipTitle="Domain Authority" [nzColor]="'#2db7f5'">DA: {{item.source.domain_authority}}</nz-tag>
+                                <nz-tag nz-tooltip nzTooltipTitle="Page Authority" [nzColor]="'#87d068'">PA: {{item.source.page_authority}}</nz-tag>
+                                <nz-tag nz-tooltip nzTooltipTitle="Backlinks" [nzColor]="'rgb(154 160 151)'">BL: {{item.source.external_pages_to_page | number}}</nz-tag>
+                            
+                                <nz-divider nzType="vertical"></nz-divider>
+
+                                <nz-tag nz-tooltip [nzTooltipTitle]="item.nofollow  ? 'NoFollow' : 'DoFollow'" [nzColor]="item.nofollow  ? 'warning' : 'success'">{{ item.nofollow ? 'NF' : 'DF' }}</nz-tag>
+
+                                <span nz-typography nz-tooltip [nzTooltipTitle]="'First seen ' + item.date_first_seen"  nzType="secondary">Last seen {{ item.date_last_seen }}</span>
+                            </div>
+    
+
+                        </div>
+
+                    </nz-list-item>
+                </nz-list>
+
+            </div>
+            
+        </nz-col>
+       
+    </nz-row>  
+
+    <nz-row>
+
+        <nz-col [nzSpan]="24">
+            <div class="kwp-flex-inline">
+
+                <a href="/urlprofile?url={{ encodeURI(metric.page) }}" nz-button nzType="primary" nzSize="large">Full Report <i nz-icon nzType="expand-alt" nzTheme="outline"></i></a>
+
+            </div>
+        </nz-col>
+
+    </nz-row>
+      
+
+</div>
